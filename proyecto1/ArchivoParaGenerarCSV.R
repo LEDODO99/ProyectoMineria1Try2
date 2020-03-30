@@ -1,26 +1,20 @@
-#Lynette García Pérez
-#Febrero 2019
-#Script que sirve para descargar y unir archivos de datos de importación de vehículos de la SAT
+# Universidad del Valle de Guatemala
+# Mineria de Datos
+# Christopher Sandoval 13660
+# Fernanda Estrada 14198
+# Luis Delgado 17187
 
-#Paquetes necesarios
-#lubridate
-#stringr
-
+# Paquetes necesarios
 library("tools")
 library("lubridate")
 library("stringr")
 
-#Extraer primero los archivos .zip y porner el working directory 
-# de R a leer de la carpeta donde est?n los txt
-# PAra leer y unir todo
-
+# Extraer primero los archivos .zip y porner el working directory 
+# de R a leer de la carpeta donde estan los txt para leer y unir todo
 listaArchivos<-list.files("Data/")
-head(listaArchivos,30)
-dataset <-data.frame()
+dataset <- data.frame()
 for (archivo in listaArchivos){
   archivo=paste("Data/",archivo,sep="")
-  # if (file_ext(archivo) == "zip")
-  #   archivo<-unzip(archivo)
   print (archivo)
   if (file_ext(archivo) == "txt"){
     if (!exists("dataset")){
@@ -35,6 +29,9 @@ for (archivo in listaArchivos){
 }
 
 
+# -------- Descripcion de los datos -------
+
+# Limpiar los datos, tienen una columna extra y esta en desorden
 names(dataset)<-names(dataset)[2:length(names(dataset))]
 dataset<-dataset[,1:ncol(dataset)-1]
 dataset$DatePoliza<-dmy(dataset$Fecha.de.la.Poliza)
@@ -43,7 +40,12 @@ dataset$Mes<-month(dataset$DatePoliza)
 dataset$Dia<-day(dataset$DatePoliza)
 dataset$DiaSem<-wday(dataset$DatePoliza)
 dataset$DatePoliza<-NULL
-
 dataset[dataset$Modelo.del.Vehiculo == 3015,"Modelo.del.Vehiculo"]<-2015
 write.csv(dataset, file="importacionesVehiculosSAT.csv",row.names = F)
 save(dataset, file="importacionesSAT.RData")
+
+view(dataset)
+summary(dataset)
+
+
+# ------- Analisis Exploratorio -------
