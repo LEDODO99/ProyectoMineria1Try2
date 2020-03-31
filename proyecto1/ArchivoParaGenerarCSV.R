@@ -42,8 +42,8 @@ dataset$Dia<-day(dataset$DatePoliza)
 dataset$DiaSem<-wday(dataset$DatePoliza)
 dataset$DatePoliza<-NULL
 dataset[dataset$Modelo.del.Vehiculo == 3015,"Modelo.del.Vehiculo"]<-2015
-write.csv(dataset, file="importacionesVehiculosSAT.csv",row.names = F)
-save(dataset, file="importacionesSAT.RData")
+dataset <- na.omit(dataset)
+write.csv(dataset, file="importacionesVehiculosSAT.csv",row.names = FALSE)
 
 view(dataset)
 summary(dataset)
