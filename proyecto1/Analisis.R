@@ -33,11 +33,14 @@ summary(cluster3)
 
 # ------- Analisis variables cuantitativas ------
 
+# Separacion variables cuantitativas
 data_filtered_quantitativeCluster <- data_importaciones[, c("Modelo.del.Vehiculo", "Centimetros.Cubicos", "Asientos", "Puertas", "Valor.CIF", "Impuesto", "Anio")]
 
+# Tener un sample aleatorio, las graficas no se generan por la gran cantidad de datos
 data_sample <- data_filtered_quantitative[sample(nrow(data_filtered_quantitative), 10000), ]
 head(data_filtered_quantitative)
 
+# Matriz de dispersion entre variables
 pairs(~Modelo.del.Vehiculo+Centimetros.Cubicos+Tonelaje+Valor.CIF+Impuesto+Anio,data=data_sample,main="Matriz de dispersion")
 
 library(ggplot2)
@@ -46,54 +49,51 @@ data_sample <- data_sample[data_sample$Centimetros.Cubicos > 2,]
 data_sample <- data_sample[data_sample$Modelo.del.Vehiculo > 1900,]
 data_sample <- data_sample[data_sample$Impuesto < 2000000,]
 
+# Resumen de variables
 summary(data_sample$Anio)
 summary(data_sample$Modelo.del.Vehiculo)
 summary(data_sample$Impuesto)
 summary(data_sample$Centimetros.Cubicos)
 
-
+# Histogramas
 ggplot(data_sample, aes(x = Anio)) +
   geom_histogram(aes(y = stat(count)), bins = 12, color="black", fill="grey") +
   scale_y_continuous()+
   xlim(c(2011, 2019))
-
 ggplot(data_sample, aes(x = Modelo.del.Vehiculo)) +
   geom_histogram(aes(y = stat(count)), bins = 20, color="black", fill="grey") +
   scale_y_continuous(labels = scales::percent)+
   xlim(c(1980, 2020))
-
 ggplot(data_sample, aes(x = Impuesto)) +
   geom_histogram(aes(y = stat(count)), bins = 20, color="black", fill="grey") +
   scale_y_continuous(labels = scales::percent)+
   xlim(c(0, 10000))
-
 ggplot(data_sample, aes(x = Centimetros.Cubicos)) +
   geom_histogram(aes(y = stat(count)), bins = 20, color="black", fill="grey") +
   scale_y_continuous(labels = scales::percent) +
   xlim(c(500, 8000))
 
-#sssssssssssssssss
+# Mostrar histogramas
 ggplot(data_sample, aes(x = Modelo.del.Vehiculo)) +
   geom_boxplot()
-
 ggplot(data_sample, aes(x = Centimetros.Cubicos)) +
   geom_boxplot()
-
 ggplot(data_sample, aes(x = Impuesto)) +
   geom_boxplot()
 
-
+# Matriz de correlacion
 library(corrplot)
 matriz_cor <- cor(data_sample)
 corrplot(matriz_cor)
 
-
+# Normalidad de los datos
+# Histograma
 hist(data_sample$Anio, main = "Histograma a?o", xlab = "A?o")
 hist(data_sample$Modelo.del.Vehiculo, main = "Histograma modelo", xlab = "Modelo")
 hist(data_sample$Impuesto, main = "Histograma Impuesto", xlab = "Impuesto")
 hist(data_sample$Centimetros.Cubicos, main = "Histograma Centimetros Cubicos", xlab = "Centimetros Cubicos")
 hist(data_sample$Valor.CIF, main = "Histograma Valor CIF", xlab = "Valor CIF")
-
+# Caja y bigotes
 boxplot(data_sample$Anio, main = "Caja A?o")
 boxplot(data_sample$Modelo.del.Vehiculo, main = "Caja Modelo")
 boxplot(data_sample$Impuesto, main = "Caja Impuesto")
@@ -122,6 +122,7 @@ for (archivo in listaArchivosAccidentes){
 a<-read_sav("DatosAccidentes/oVGWNimc4xUWDFj0317UxhyHmsBLvaW7.sav")
 b<-read_sav("DatosAccidentes/JHtnT62UiTxEP6AbhA4RcFDN6Nokk4c9.sav")
 
+# Frecuencias de cada variable
 frecuenciaPais=table(dataset$Pais.de.Proveniencia)
 df<-as.data.frame(frecuenciaPais)
 head(df[order(-df$Freq),],30)
