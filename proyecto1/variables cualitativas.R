@@ -74,3 +74,5 @@ frecuenciaDiaSem=table(dataset$DiaSem)
 df<-as.data.frame(frecuenciaDiaSem)
 head(df[order(df$Var1),],30)
 barplot (frecuenciaAnio)
+
+dataImp=read.csv("importacionesVehiculosSAT.csv")
