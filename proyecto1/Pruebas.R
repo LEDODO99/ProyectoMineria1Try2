@@ -130,3 +130,56 @@ modeloSVM_1<-svm(estado_pil~., data=accidentes_train, cost=2^5, kernel="linear")
 prediccion_svm<-predict(modeloSVM_1,newdata=accidentes_test[,2:4])
 confusionMatrix(prediccion_svm,accidentes_test$estado_pil)
 
+
+
+#porcentaje de hechos que tienen un coonfirmado ebrio o no ebrio
+require(neuralnet)
+
+str(accidentes_train)
+str(provisional)
+provisional=accidentes_train
+head(model.matrix(~dia_sem_ocu,data = provisional))
+provisional$dia_sem_ocu<-relevel(provisional$dia_sem_ocu,ref="2")
+provisional$sexo_pil<-relevel(provisional$sexo_pil,ref="2")
+provisional$tipo_veh<-relevel(provisional$tipo_veh,ref="2")
+provisional$color_veh<-relevel(provisional$color_veh,ref="2")
+
+m=model.matrix(~dia_sem_ocu+sexo_pil+edad_pil+tipo_veh+color_veh,data=provisional)
+nn<-neuralnet(estado_pil~as.numeric(levels(sexo_pil))[sexo_pil]+dia_sem_ocu+edad_pil+color_veh+tipo_veh , data=accidentes_train, hidden=2)
+
+install.packages("e1071")
+library(e1071)
+install.packages("caret")
+library(caret)
+a<-svm(estado_pil~sexo_pil+dia_sem_ocu+edad_pil+color_veh+tipo_veh,data=accidentes_train )
+
+summary(a)
+
+pred<-predict(a,accidentes_test)
+summary(pred)
+summary(accidentes_test)
+matrix<-confusionMatrix(pred,accidentes_test$estado_pil)
+matrix
+
+
+a<-svm(estado_pil~sexo_pil+dia_sem_ocu+edad_pil+color_veh+tipo_veh,data=accidentes_train )
+pred<-predict(a,accidentes_test)
+matrix<-confusionMatrix(pred,accidentes_test$estado_pil)
+matrix
+
+
+a<-svm(estado_pil~dia_sem_ocu+dia_ocu+hora_ocu,data=accidentes_train )
+pred<-predict(a,accidentes_test)
+matrix<-confusionMatrix(pred,accidentes_test$estado_pil)
+matrix
+
+a<-svm(estado_pil~sexo_pil+edad_pil,data=accidentes_train )
+pred<-predict(a,accidentes_test)
+matrix<-confusionMatrix(pred,accidentes_test$estado_pil)
+matrix
+
+
+a<-svm(estado_pil~hora_ocu,data=accidentes_train )
+pred<-predict(a,accidentes_test)
+matrix<-confusionMatrix(pred,accidentes_test$estado_pil)
+matrix
