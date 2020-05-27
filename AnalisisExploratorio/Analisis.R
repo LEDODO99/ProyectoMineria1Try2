@@ -108,19 +108,41 @@ boxplot(data_sample$Valor.CIF, main = "Caja Valor CIF")
 
 install.packages("haven")
 library("haven")
-listaArchivosAccidentes<-list.files("DatosAccidentes/")
-for (archivo in listaArchivosAccidentes){
-  archivo=paste("DatosAccidentes/",archivo,sep="")
-  if(!exists("accidentes")){
-    accidentes<-read_sav(archivo)
-  }else{
-    temp_dataset<-read_sav(archivo)
-    accidentes<-rbind(accidentes,temp_dataset)
-    rm(temp_dataset)
-  }
-}
-a<-read_sav("DatosAccidentes/oVGWNimc4xUWDFj0317UxhyHmsBLvaW7.sav")
-b<-read_sav("DatosAccidentes/JHtnT62UiTxEP6AbhA4RcFDN6Nokk4c9.sav")
+
+accidentes_train<-read_sav("DatosAccidentes/accidentes_2009.sav")
+accidentes_train<-accidentes_train[,c("estado_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_vehi", "color_vehi")]
+colnames(accidentes_train) <- c("estado_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_veh", "color_veh")
+
+
+temp_dataset<-read_sav("DatosAccidentes/accidentes_2010.sav")
+temp_dataset<-temp_dataset[,c("estado_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_v", "color_v")]
+colnames(temp_dataset) <- c("estado_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_veh", "color_veh")
+
+accidentes_train<-rbind(accidentes_train,temp_dataset)
+
+temp_dataset<-read_sav("DatosAccidentes/accidentes_2011.sav")
+temp_dataset<-temp_dataset[,c("estado_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_vehiculo", "color_vehi")]
+colnames(temp_dataset) <- c("estado_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_veh", "color_veh")
+
+accidentes_train<-rbind(accidentes_train,temp_dataset)
+
+temp_dataset<-read_sav("DatosAccidentes/accidentes_2012.sav")
+temp_dataset<-temp_dataset[,c("condicion_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_vehi", "color_vehi")]
+colnames(temp_dataset) <- c("estado_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_veh", "color_veh")
+
+accidentes_train<-rbind(accidentes_train,temp_dataset)
+
+temp_dataset<-read_sav("DatosAccidentes/accidentes_2013.sav")
+temp_dataset<-temp_dataset[,c("estado_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_veh", "color_veh")]
+colnames(temp_dataset) <- c("estado_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_veh", "color_veh")
+
+accidentes_train<-rbind(accidentes_train,temp_dataset)
+
+temp_dataset<-read_sav("DatosAccidentes/accidentes_2014.sav")
+temp_dataset<-temp_dataset[,c("estado_con", "día_sem_ocu", "hora_ocu", "sexo_con","edad_con", "tipo_veh", "color_veh")]
+colnames(temp_dataset) <- c("estado_pil", "dia_sem_ocu", "hora_ocu", "sexo_pil","edad_pil", "tipo_veh", "color_veh")
+
+accidentes_train<-rbind(accidentes_train,temp_dataset)
 
 # Frecuencias de cada variable
 frecuenciaPais=table(dataset$Pais.de.Proveniencia)
